@@ -1,0 +1,16 @@
+<%= @media_library.errors.inspect %>
+
+<%= form_for @media_library do |f| %>
+  <div>
+    <%= f.label :name %> :
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :path %> :
+    <%= f.text_field :path %>
+  </div>
+  <div>
+    <%= f.submit %>
+  </div>
+  
+<% end %>
