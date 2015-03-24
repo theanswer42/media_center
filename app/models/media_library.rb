@@ -5,7 +5,7 @@ class MediaLibrary < ActiveRecord::Base
 
   after_save :scan_path
   
-  validates :name, :path, presence: true
+  validates :name, :path, presence: true, uniqueness: true
   validates :path, uniqueness: true
   validate :path_is_a_directory
   validate :path_is_absolute
@@ -30,6 +30,8 @@ class MediaLibrary < ActiveRecord::Base
   
   def scan_path
     Dir.glob(path, "**", "*") do |filename|
+      next unless MediaFile::MEDIA_EXTENSIONS.include?(File.extname(filename).downcase)
+      
       
     end
   end
