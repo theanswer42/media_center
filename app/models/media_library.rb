@@ -2,6 +2,7 @@ class MediaLibrary < ActiveRecord::Base
   has_many :media_files, dependent: :destroy
 
   before_validation :strip_spaces
+  before_validation :make_path_real
 
   after_save :scan_path
   
@@ -11,9 +12,13 @@ class MediaLibrary < ActiveRecord::Base
   validate :path_is_absolute
 
   private
+  def make_path_real
+    self.path = File.realpath(path) if !path.blank? && path.match(/^\//) && File.directory?(path)
+  end
+
   def strip_spaces
-    name = name.strip if name
-    path = path.strip if path
+    self.name = self.name.strip if self.name
+    self.path = self.path.strip if self.path
   end
 
   def path_is_absolute
@@ -29,10 +34,12 @@ class MediaLibrary < ActiveRecord::Base
   end
   
   def scan_path
-    Dir.glob(path, "**", "*") do |filename|
+    Dir.glob(File.join(path, "**", "*")).each do |filename|
       next unless MediaFile::MEDIA_EXTENSIONS.include?(File.extname(filename).downcase)
-      
-      
+      media_file = self.media_files.build(:path => filename)
+      unless media_file.save
+        logger.error("File not imported: #{filename}")
+      end
     end
   end
 end
