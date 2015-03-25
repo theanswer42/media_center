@@ -1,9 +1,13 @@
 video1:
   media_library: library1
+  name: video1
+  status: enabled
   path: <%= Rails.root.join("test/library_fixtures/library1/test_video1.mp4") %>
   checksum: 4df554d3ec3c322cfa4853866560c4cf107d1a25f72a90ef098000c962ada82a
 video2:
   media_library: library1
+  name: video1
+  status: enabled
   path: <%= Rails.root.join("test/library_fixtures/library1/test_video2.mp4") %>
   checksum: c1d42498569c23b2d22c2ac9a90ee7e4a9d191e2e3bf6f93dcd9d2ebeaa852ac
 
