@@ -10,6 +10,7 @@ class MediaFile < ActiveRecord::Base
 
   after_initialize :set_status
   after_initialize :set_checksum
+  after_initialize :make_path_real
 
   before_validation :make_path_real
   
@@ -48,8 +49,10 @@ class MediaFile < ActiveRecord::Base
   end
   
   def make_path_real
-    # Make it fail later if path is not absolute (implied by the media_library_path match)
-    self.path = File.realpath(path) if !path.blank? && path.match(/^\//) && status != STATUS_MISSING
+    if new_record? || path_changed?
+      # Make it fail later if path is not absolute (implied by the media_library_path match)
+      self.path = File.realpath(path) if !path.blank? && path.match(/^\//) && status != STATUS_MISSING
+    end
   end
   
   def path_is_media_file

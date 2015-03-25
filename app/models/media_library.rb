@@ -14,42 +14,50 @@ class MediaLibrary < ActiveRecord::Base
 
   def scan
     checksums_in_library = self.media_files.all.each_with_object({}) do |media_file, hash|
-      hash[media_file.checksum] = media_file.status
+      hash[media_file.checksum] = {id: media_file.id, status: media_file.status, library_path: media_file.path, paths: []}
     end
     media_files_to_save = {}
     
     Dir.glob(File.join(path, "**", "*")).each do |filename|
       extname = File.extname(filename)
       next unless MediaFile::MEDIA_EXTENSIONS.include?(extname.downcase)
-      media_file = self.media_files.build(path: filename, name: File.basename(filename, extname))
+      media_file = MediaFile.new(path: filename, name: File.basename(filename, extname))
 
       if !checksums_in_library[media_file.checksum]
         media_files_to_save[media_file.checksum] = media_file
       else
-        existing_status = checksums_in_library[media_file.checksum]
-        if existing_status == MediaFile::STATUS_MISSING
-          missing_media_file = self.media_files.where(checksum: media_file.checksum, status: MediaFile::STATUS_MISSING).first
+        if checksums_in_library[media_file.checksum][:status] == MediaFile::STATUS_MISSING
+          missing_media_file = self.media_files.find(checksums_in_library[media_file.checksum][:id])
           missing_media_file.path = media_file.path
           missing_media_file.status = MediaFile::STATUS_ENABLED
           media_files_to_save[media_file.checksum] = missing_media_file
         else
-          checksums_in_library[media_file.checksum] = "accounted"
+          checksums_in_library[media_file.checksum][:paths] << media_file.path
         end
       end
     end
     
     media_files_to_save.values.each do |media_file|
+      media_file = self.media_files.build(media_file.attributes) if media_file.new_record?
+        
       if media_file.save
-        checksums_in_library[media_file.checksum] = "accounted"
+        checksums_in_library[media_file.checksum]||= {id: media_file.id, status: media_file.status, library_path: media_file.path, paths: []}
+        checksums_in_library[media_file.checksum][:paths] << media_file.path
       else
-        logger.error("File not imported: #{filename}")
+        logger.error("File not imported: #{media_file.path}")
       end
     end
 
-    checksums_in_library.each do |checksum, status|
-      if status != "accounted"
-        media_file = self.media_files.where(checksum: checksum).first
+    checksums_in_library.each do |checksum, info|
+      if info[:paths].empty?
+        media_file = self.media_files.find(info[:id])
         media_file.mark_missing
+      elsif !info[:paths].include?(info[:library_path])
+        media_file = self.media_files.find(info[:id])
+        media_file.path = info[:paths].last
+        unless media_file.save
+          logger.error("File not updated(path): #{media_file.path}")
+        end
       end
     end
     self.scanned_at = Time.now

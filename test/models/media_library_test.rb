@@ -4,6 +4,11 @@ class MediaLibraryTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
+
+  def setup
+    FileUtils.rm_f(Rails.root.join("test/library_fixtures/library1/new_video5.mp4"))
+    FileUtils.rm_f(Rails.root.join("test/library_fixtures/library1/new_video6.mp4"))
+  end
   
   test "validations" do
     m = MediaLibrary.new(:name => "Library 2", :path => "")
@@ -119,5 +124,37 @@ class MediaLibraryTest < ActiveSupport::TestCase
     now_missing = MediaFile.find(will_be_missing.id)
     assert_equal MediaFile::STATUS_MISSING, now_missing.status
   end
-  
+
+  test "rescan moved" do
+    m = media_libraries(:library1)
+
+    assert_equal 2, m.media_files.count
+    assert_equal 2, m.media_files.where(status: MediaFile::STATUS_ENABLED).count
+    
+    f = File.open(Rails.root.join("test/library_fixtures/library1/new_video5.mp4"), "wb")
+    f << "new video 5\n"
+    f.close
+
+    m.scan
+    assert_equal 4, m.media_files.where(status: MediaFile::STATUS_ENABLED).count
+    
+    FileUtils.mv(Rails.root.join("test/library_fixtures/library1/new_video5.mp4"),
+                 Rails.root.join("test/library_fixtures/library1/new_video6.mp4"))
+    
+    m.scan
+
+    assert_equal 4, m.media_files.count
+    assert_equal 4, m.media_files.where(status: MediaFile::STATUS_ENABLED).count
+
+    moved_file = m.media_files.where(:name => "new_video5").first
+    assert_equal Rails.root.join("test/library_fixtures/library1/new_video6.mp4").to_s, moved_file.path
+    
+    FileUtils.rm(Rails.root.join("test/library_fixtures/library1/new_video6.mp4"))
+
+    m.scan
+
+    assert_equal 4, m.media_files.count
+    assert_equal 3, m.media_files.where(status: MediaFile::STATUS_ENABLED).count    
+  end
+
 end
