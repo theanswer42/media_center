@@ -1,6 +1,9 @@
 class MediaFile < ActiveRecord::Base
-  MEDIA_EXTENSIONS = %w(.mp4) +
-                     %w(.mp3 .ogg .oga)
+  AUDIO_EXTENSIONS = %w(.mp3 .ogg .oga)
+  VIDEO_EXTENSIONS = %w(.mp4)
+  
+  MEDIA_EXTENSIONS = AUDIO_EXTENSIONS + VIDEO_EXTENSIONS
+                     
   
   belongs_to :media_library
 
@@ -19,7 +22,14 @@ class MediaFile < ActiveRecord::Base
   validates :name, presence: true
   validates :status, presence: true, inclusion: [STATUS_ENABLED, STATUS_DELETED, STATUS_MISSING]
   validate :path_is_media_file
-  
+
+  def is_audio_file?
+    AUDIO_EXTENSIONS.include?(File.extname(path))
+  end
+
+  def is_video_file?
+    VIDEO_EXTENSIONS.include?(File.extname(path))
+  end
 
   def mark_missing
     self.status = STATUS_MISSING

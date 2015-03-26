@@ -1,0 +1,12 @@
+<h1><%= @media_file.name %></h1>
+<% if @media_file.is_audio_file? %>
+<audio src="" controls>
+</audio>
+<% else %>
+<video controls>
+  <source src="" />
+</video>
+<% end %>
+
+<br />
+<%= link_to "Back to #{@media_library.name}", media_library_path(@media_library) %>
