@@ -1,4 +1,5 @@
-<div>
-  <div><%= link_to media_library.name, media_library_path(media_library) %> at <%= media_library.path %></div>
-  <div>Last scanned at: <%= media_library.scanned_at %>.</div>
-</div>
+<tr>
+  <td><%= link_to media_library.name, media_library_path(media_library) %></td>
+  <td><%= media_library.path %></td>
+  <td><%= media_library.scanned_at %></td>
+</tr>

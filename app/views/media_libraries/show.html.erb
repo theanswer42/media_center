@@ -1,7 +1,9 @@
-<h1><%= @media_library.name %></h1>
-<div>
-  <%= render @media_library.media_files %>
-</div>
+<div class="container">
+  <h1><%= @media_library.name %></h1>
+  <table class="table">
+    <%= render @media_library.media_files %>
+  </table>
 
-<br />
-<%= link_to "All libraries", media_libraries_path %>
+  <br />
+  <%= link_to "All libraries", media_libraries_path %>
+</div>

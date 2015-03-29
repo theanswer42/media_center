@@ -1,5 +1,14 @@
-<h1>Your Libraries</h1>
-<%= render @media_libraries %>
-
-<br />
-<%= link_to "Add a new library", new_media_library_path %>
+<div class="container">
+  <h1>Your Libraries</h1>
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <th>Path</th>
+      <th>Last Scanned</th>
+    </tr>
+    <%= render @media_libraries %>
+  </table>
+  
+  <br />
+  <%= link_to "Add a new library", new_media_library_path, class: "btn btn-default" %>
+</div>
