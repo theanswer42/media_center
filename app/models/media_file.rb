@@ -30,7 +30,14 @@ class MediaFile < ActiveRecord::Base
   def is_video_file?
     VIDEO_EXTENSIONS.include?(File.extname(path))
   end
-
+  
+  def library_path
+    # take the relative path, prefix with the library basename
+    media_library_path = self.media_library.path
+    relative_path = self.path[media_library_path.length..-1]
+    "/epidaurus/#{File.basename(media_library_path)}#{relative_path}"
+  end
+  
   def mark_missing
     self.status = STATUS_MISSING
     self.save
@@ -43,6 +50,7 @@ class MediaFile < ActiveRecord::Base
 
   # TODO: This should move to an extension which I can use everywhere
   def set_checksum
+    return if !checksum.blank?
     return if path.blank? || !File.file?(path)
     
     self.checksum = File.open(path, 'rb') do |io|

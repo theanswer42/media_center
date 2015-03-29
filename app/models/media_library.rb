@@ -36,7 +36,7 @@ class MediaLibrary < ActiveRecord::Base
         end
       end
     end
-    
+
     media_files_to_save.values.each do |media_file|
       media_file = self.media_files.build(media_file.attributes) if media_file.new_record?
         
