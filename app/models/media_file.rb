@@ -35,7 +35,7 @@ class MediaFile < ActiveRecord::Base
     # take the relative path, prefix with the library basename
     media_library_path = self.media_library.path
     relative_path = self.path[media_library_path.length..-1]
-    "/epidaurus/#{File.basename(media_library_path)}#{relative_path}"
+    "/media_center/#{File.basename(media_library_path)}#{relative_path}"
   end
   
   def mark_missing
@@ -54,10 +54,10 @@ class MediaFile < ActiveRecord::Base
     return if path.blank? || !File.file?(path)
     
     self.checksum = File.open(path, 'rb') do |io|
-      dig = Digest::SHA256.new
-      buf = ""
-      dig.update(buf) while io.read(4096, buf)
-      dig
+      digest = Digest::MD5.new
+      buffer = ""
+      digest.update(buffer) while io.read(4096, buffer)
+      digest
     end.to_s
   end
 

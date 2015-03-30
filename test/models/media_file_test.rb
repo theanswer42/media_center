@@ -7,7 +7,7 @@ class MediaFileTest < ActiveSupport::TestCase
     
     f = m.media_files.build(path: Rails.root.join("test/library_fixtures/library1/new_video4.mp4"), name: "new video")
     assert f.save
-    assert_equal "02db32814a8ca1051b997c76055ececc97eed5c5cf0761ef748d374327174570", f.checksum
+    assert_equal "283f485240e16f244f15d57b9197f4a9", f.checksum
   end
 
   test "make_path_real" do
