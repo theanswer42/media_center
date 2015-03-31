@@ -1,0 +1,8 @@
+movie1:
+  movie_library: library1
+  name: video1
+  media_file: video1
+movie2:
+  movie_library: library1
+  name: video2
+  media_file: video2

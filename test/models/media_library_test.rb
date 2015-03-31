@@ -11,33 +11,33 @@ class MediaLibraryTest < ActiveSupport::TestCase
   end
   
   test "validations" do
-    m = MediaLibrary.new(:name => "Library 2", :path => "")
+    m = MovieLibrary.new(:name => "Library 2", :path => "")
     assert !m.valid?
 
-    m = MediaLibrary.new(:name => "Library 2", :path => "/path/does/not/exist")
+    m = MovieLibrary.new(:name => "Library 2", :path => "/path/does/not/exist")
     assert !m.valid?
 
-    m = MediaLibrary.new(:name => "Library 2", :path => Rails.root.join("test/library_fixtures/library2"))
+    m = MovieLibrary.new(:name => "Library 2", :path => Rails.root.join("test/library_fixtures/library2"))
     assert m.valid?
 
-    m = MediaLibrary.new(:name => "", :path => Rails.root.join("test/library_fixtures/library2"))
+    m = MovieLibrary.new(:name => "", :path => Rails.root.join("test/library_fixtures/library2"))
     assert !m.valid?
 
-    m = MediaLibrary.new(:name => "Library 1", :path => Rails.root.join("test/library_fixtures/library2"))
+    m = MovieLibrary.new(:name => "Library 1", :path => Rails.root.join("test/library_fixtures/library2"))
     assert !m.valid?
 
-    m = MediaLibrary.new(:name => "  Library 1   ", :path => Rails.root.join("test/library_fixtures/library2"))
+    m = MovieLibrary.new(:name => "  Library 1   ", :path => Rails.root.join("test/library_fixtures/library2"))
     assert !m.valid?
     
-    m = MediaLibrary.new(:name => "Library 2", :path => Rails.root.join("test/library_fixtures/library1"))
+    m = MovieLibrary.new(:name => "Library 2", :path => Rails.root.join("test/library_fixtures/library1"))
     assert !m.valid?
 
-    m = MediaLibrary.new(:name => "Library 2", :path => "   " + Rails.root.join("test/library_fixtures/library1").to_s)
+    m = MovieLibrary.new(:name => "Library 2", :path => "   " + Rails.root.join("test/library_fixtures/library1").to_s)
     assert !m.valid?
   end
 
   test "strip spaces before saving" do
-    m = MediaLibrary.new(:name => "   Library 2    ", :path => Rails.root.join("test/library_fixtures/library2").to_s + "    ")
+    m = MovieLibrary.new(:name => "   Library 2    ", :path => Rails.root.join("test/library_fixtures/library2").to_s + "    ")
     assert m.save
 
     assert_equal "Library 2", m.name
@@ -45,14 +45,14 @@ class MediaLibraryTest < ActiveSupport::TestCase
   end
 
   test "make path real" do
-    m = MediaLibrary.new(:name => "Library 2", :path => Rails.root.join("test/library_fixtures/../library_fixtures/library2"))
+    m = MovieLibrary.new(:name => "Library 2", :path => Rails.root.join("test/library_fixtures/../library_fixtures/library2"))
     assert m.save
 
     assert_equal Rails.root.join("test/library_fixtures/library2").to_s, m.path
   end
 
   test "scan path" do
-    m = MediaLibrary.new(name: "Library 2", path: Rails.root.join("test/library_fixtures/library2"))
+    m = MovieLibrary.new(name: "Library 2", path: Rails.root.join("test/library_fixtures/library2"))
     assert m.save!
     assert_equal 2, m.media_files.where(status: MediaFile::STATUS_ENABLED).count
     
@@ -63,7 +63,7 @@ class MediaLibraryTest < ActiveSupport::TestCase
   end
 
   test "rescan no change" do
-    m = MediaLibrary.new(name: "Library 2", path: Rails.root.join("test/library_fixtures/library2"))
+    m = MovieLibrary.new(name: "Library 2", path: Rails.root.join("test/library_fixtures/library2"))
     assert m.save!
     assert_equal 2, m.media_files.count
     m.media_files.all.each do |media_file|
@@ -98,7 +98,7 @@ class MediaLibraryTest < ActiveSupport::TestCase
     missing_file.mark_missing
 
     m = media_libraries(:library1)
-    m = MediaLibrary.find(m.id)
+    m = MovieLibrary.find(m.id)
 
     assert_equal 2, m.media_files.count
     assert_equal 1, m.media_files.where(status: MediaFile::STATUS_ENABLED).count

@@ -10,6 +10,7 @@ class MediaLibrary < ActiveRecord::Base
   validates :path, uniqueness: true
   validate :path_is_a_directory
   validate :path_is_absolute
+  validates :type, presence: true, inclusion: %w(MovieLibrary)
 
 
   def scan
@@ -62,6 +63,8 @@ class MediaLibrary < ActiveRecord::Base
     end
     self.scanned_at = Time.now
     save
+
+    after_scan
   end
 
 

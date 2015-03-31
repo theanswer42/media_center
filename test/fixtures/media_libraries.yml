@@ -1,4 +1,5 @@
 library1:
   name: "Library 1"
+  type: "MovieLibrary"
   path: <%= Rails.root.join("test/library_fixtures/library1") %>
   scanned_at: <%= 5.days.ago.to_s(:db) %>

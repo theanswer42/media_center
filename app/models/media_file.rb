@@ -1,8 +1,9 @@
 class MediaFile < ActiveRecord::Base
   AUDIO_EXTENSIONS = %w(.mp3 .ogg .oga)
   VIDEO_EXTENSIONS = %w(.mp4)
+  SUBTITLES_EXTENSIONS = %w(.vtt)
   
-  MEDIA_EXTENSIONS = AUDIO_EXTENSIONS + VIDEO_EXTENSIONS
+  MEDIA_EXTENSIONS = AUDIO_EXTENSIONS + VIDEO_EXTENSIONS + SUBTITLES_EXTENSIONS
                      
   
   belongs_to :media_library
@@ -29,6 +30,10 @@ class MediaFile < ActiveRecord::Base
 
   def is_video_file?
     VIDEO_EXTENSIONS.include?(File.extname(path))
+  end
+
+  def is_subtitles_file?
+    SUBTITLES_EXTENSIONS.include?(File.extname(path))
   end
   
   def library_path

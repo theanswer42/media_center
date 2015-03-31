@@ -6,7 +6,7 @@ video1:
   checksum: a38e73c7a7f7b0f20bbccd99fdba7c1c
 video2:
   media_library: library1
-  name: video1
+  name: video2
   status: enabled
   path: <%= Rails.root.join("test/library_fixtures/library1/test_video2.mp4") %>
   checksum: da52691e0b45c6db6f1f397c16d90a74
