@@ -2,8 +2,10 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  resources :media_libraries do 
-    resources :media_files
+  resources :media_libraries, only: [:index, :create, :new]
+
+  resources :movie_libraries, only: [:show] do
+    resources :movies, only: [:show]
   end
   
   # You can have the root of your site routed with "root"

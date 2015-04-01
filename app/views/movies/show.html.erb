@@ -1,0 +1,9 @@
+<div class="container">
+  <h1><%= @movie.name %></h1>
+  <video controls>
+    <source src="<%=@movie.media_file.library_path%>" />
+  </video>
+  
+  <br />
+  <%= link_to "Back to #{@movie_library.name}", movie_library_path(@movie_library) %>
+</div>

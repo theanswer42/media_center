@@ -20,29 +20,14 @@ class MediaLibrariesControllerTest < ActionController::TestCase
     assert assigns(:media_library)
   end
 
-  test "library show" do
-    get :show, id: media_libraries(:library1).id
-    assert_response :success
-    assert assigns(:media_library)
-  end
-
-  test "library show empty" do
-    m = media_libraries(:library1)
-    m.media_files.all.each {|f| f.destroy }
-    
-    get :show, id: media_libraries(:library1).id
-    assert_response :success
-    assert assigns(:media_library)
-  end
-
   test "library create success" do
-    post :create, media_library: {name: "library2", path: Rails.root.join("test/library_fixtures/library2").to_s}
+    post :create, media_library: {type: "MovieLibrary", name: "library2", path: Rails.root.join("test/library_fixtures/library2").to_s}
     assert_response :redirect
-    assert_redirected_to media_library_path(assigns(:media_library))
+    assert_redirected_to movie_library_path(assigns(:media_library))
   end
 
   test "library create error" do
-    post :create, media_library: {name: "", path: Rails.root.join("test/library_fixtures/library2").to_s}
+    post :create, media_library: {type: "MovieLibrary", name: "", path: Rails.root.join("test/library_fixtures/library2").to_s}
     assert_response :success
     assert_template :new
   end
