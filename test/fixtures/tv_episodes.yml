@@ -1,0 +1,9 @@
+show2_season1_video21:
+  tv_season: show2_season1
+  name: video21
+  media_file: show2_season1_video21
+
+show2_season2_video22:
+  tv_season: show2_season2
+  name: video22
+  media_file: show2_season2_video22

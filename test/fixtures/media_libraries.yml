@@ -3,3 +3,9 @@ library1:
   type: "MovieLibrary"
   path: <%= Rails.root.join("test/library_fixtures/library1") %>
   scanned_at: <%= 5.days.ago.to_s(:db) %>
+
+tv_library1:
+  name: "TV Library 1"
+  type: "TvLibrary"
+  path: <%= Rails.root.join("test/library_fixtures/tv_library1") %>
+  scanned_at: <%= 5.days.ago.to_s(:db) %>

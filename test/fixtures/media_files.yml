@@ -10,4 +10,15 @@ video2:
   status: enabled
   path: <%= Rails.root.join("test/library_fixtures/library1/test_video2.mp4") %>
   checksum: da52691e0b45c6db6f1f397c16d90a74
-
+show2_season1_video21:
+  media_library: tv_library1
+  name: video21
+  status: enabled
+  path: <%= Rails.root.join("test/library_fixtures/tv_library1/show2/season1/video21.mp4") %>
+  checksum: 3c58b3705dcdde838a539c0f604cf9ae
+show2_season2_video22:
+  media_library: tv_library1
+  name: video22
+  status: enabled
+  path: <%= Rails.root.join("test/library_fixtures/tv_library1/show2/season2/video22.mp4") %>
+  checksum: f435128b05b3dde639020a1585520615

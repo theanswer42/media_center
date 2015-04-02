@@ -10,6 +10,8 @@ class MediaLibrariesController < ApplicationController
   def create
     if params[:media_library][:type]=="MovieLibrary"
       @media_library = MovieLibrary.new(params.require(:media_library).permit(:name, :path))
+    elsif params[:media_library][:type]=="TvLibrary"
+      @media_library = TvLibrary.new(params.require(:media_library).permit(:name, :path))
     else
       raise "Unsupported type"
     end

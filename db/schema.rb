@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150330195825) do
+ActiveRecord::Schema.define(version: 20150402210835) do
 
   create_table "media_files", force: :cascade do |t|
     t.string   "name",             limit: 255
@@ -42,5 +42,28 @@ ActiveRecord::Schema.define(version: 20150330195825) do
   end
 
   add_index "movies", ["movie_library_id", "media_file_id"], name: "index_movies_on_movie_library_id_and_media_file_id", using: :btree
+
+  create_table "tv_episodes", force: :cascade do |t|
+    t.string   "name",              limit: 255, null: false
+    t.integer  "media_file_id",     limit: 4
+    t.integer  "subtitles_file_id", limit: 4
+    t.integer  "tv_season_id",      limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  create_table "tv_seasons", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.integer  "tv_show_id", limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "tv_shows", force: :cascade do |t|
+    t.string   "name",          limit: 255, null: false
+    t.integer  "tv_library_id", limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
 
 end

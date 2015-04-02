@@ -10,7 +10,7 @@ class MediaLibrary < ActiveRecord::Base
   validates :path, uniqueness: true
   validate :path_is_a_directory
   validate :path_is_absolute
-  validates :type, presence: true, inclusion: %w(MovieLibrary)
+  validates :type, presence: true, inclusion: %w(MovieLibrary TvLibrary)
 
 
   def scan

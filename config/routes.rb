@@ -7,6 +7,14 @@ Rails.application.routes.draw do
   resources :movie_libraries, only: [:show] do
     resources :movies, only: [:show]
   end
+
+  # Since nesting here would create 4 levels of nested resources, We'll do non-nested
+  # Resources for tv stuff
+  resources :tv_libraries, only: [:show]
+  resources :tv_shows, only: [:show]
+  resources :tv_seasons, only: [:show]
+  resources :tv_episodes, only: [:show]
+  
   
   # You can have the root of your site routed with "root"
   # root 'welcome#index'

@@ -1,0 +1,9 @@
+<div class="container">
+  <h1><%= @tv_library.name %></h1>
+  <table class="table">
+    <%= render @tv_shows %>
+  </table>
+
+  <br />
+  <%= link_to "All libraries", media_libraries_path %>
+</div>
