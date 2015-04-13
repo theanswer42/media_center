@@ -18,6 +18,8 @@ class MediaLibrariesController < ApplicationController
     if @media_library.save
       if @media_library.is_a?(MovieLibrary)
         redirect_to movie_library_path(@media_library)
+      elsif @media_library.is_a(TvLibrary)
+        redirect_to tv_library_path(@media_library)
       else
         raise "Unsupported type"
       end

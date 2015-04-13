@@ -1,6 +1,9 @@
+show1_default:
+  name: default
+  tv_show: show1
 show2_season1:
-  name: Season 1
+  name: season1
   tv_show: show2
 show2_season2:
-  name: Season 2
+  name: season1
   tv_show: show2

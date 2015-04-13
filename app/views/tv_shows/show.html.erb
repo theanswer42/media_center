@@ -1,1 +1,10 @@
-test
+<div class="container">
+  <h1><%= @tv_show.name %></h1>
+  <table class="table">
+    <%= render @tv_seasons %>
+  </table>
+
+  <br />
+  <%= link_to "All Shows in #{@tv_library.name}", tv_library_path(@tv_library) %>
+</div>
+

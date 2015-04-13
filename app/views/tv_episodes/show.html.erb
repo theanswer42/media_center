@@ -1,1 +1,10 @@
-test
+<div class="container">
+  <h1><%= @tv_show.name %><%= @tv_season.name == "default" ? "" : " - #{@tv_season.name}" %> - <%= @tv_episode.name %></h1>
+  <video controls>
+    <source src="<%=@tv_episode.media_file.library_path%>" />
+  </video>
+  
+  <br />
+  <%= link_to @tv_season.name, tv_season_path(@tv_season) %>
+</div>
+
