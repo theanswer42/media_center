@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   database: media_center_production
-  username: railsuser
-  password: <%= ENV['EPIDAURUS_DATABASE_PASSWORD'] %>
+  username: mcuser
+  password: <%= ENV['MEDIA_CENTER_DATABASE_PASSWORD'] %>
